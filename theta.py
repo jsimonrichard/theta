@@ -1,5 +1,8 @@
 import re
+<<<<<<< HEAD
 import random
+=======
+>>>>>>> 994526cf78e626be07e66bfd527bca1dc1415616
 
 letters = ['a', 'b', 'c', 'd', 'e',
            'f', 'g', 'h', 'i', 'j',
@@ -52,6 +55,7 @@ def str_to_int(string):
     for i in string:
         output.append( int(letters.index(i)) + 1 )
     return output
+<<<<<<< HEAD
 
 def onetime_pad(length):
     output = []
@@ -60,3 +64,5 @@ def onetime_pad(length):
     return ''.join(output)
 
 print(onetime_pad(100))
+=======
+>>>>>>> 994526cf78e626be07e66bfd527bca1dc1415616
