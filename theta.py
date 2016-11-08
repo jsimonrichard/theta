@@ -1,8 +1,5 @@
 import re
-<<<<<<< HEAD
 import random
-=======
->>>>>>> 994526cf78e626be07e66bfd527bca1dc1415616
 
 letters = ['a', 'b', 'c', 'd', 'e',
            'f', 'g', 'h', 'i', 'j',
