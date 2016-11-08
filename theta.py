@@ -1,4 +1,5 @@
 import re
+import random
 
 letters = ['a', 'b', 'c', 'd', 'e',
            'f', 'g', 'h', 'i', 'j',
@@ -51,3 +52,11 @@ def str_to_int(string):
     for i in string:
         output.append( int(letters.index(i)) + 1 )
     return output
+
+def onetime_pad(length):
+    output = []
+    for i in range(length):
+        output.append(str(random.randint(0, 9)))
+    return ''.join(output)
+
+print(onetime_pad(100))
