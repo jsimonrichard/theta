@@ -111,3 +111,18 @@ def onetime_pad(length):
     for i in range(length):
         output.append(str(random.randint(0, 9)))
     return ''.join(output)
+
+class algo(object):
+    #These fuctions take a while to run
+    def primes(key, steps):
+        out = str(key)
+        for i in range(steps):
+            x = out[-7:-1]
+            middle = math.floor(len(x)/2)
+            x_firsthalf, x_secondhalf = (x[0:middle], x[middle:len(x)])
+            x = int(x_firsthalf) * int(x_secondhalf)
+            x = (2**x) - 1
+            out += str(x)
+
+        return out
+

@@ -20,4 +20,7 @@ print()
 print('Numbering text: "hello world"')
 print(ta.str_to_int('hello world'))
 
+print('generating key using num: 1632 steps: 2; Using primes algorithum')
+print(ta.algo.primes(1632, 2))
+
 input()
