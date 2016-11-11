@@ -100,11 +100,11 @@ def str_to_int(string):
         output.append( int(letters.index(i)) + 1 )
     return output
 
-def int_to_string(int_list):
+def int_to_str(int_list):
     output = []
     for i in int_list:
         output.append( letters[i - 1] )
-    return output
+    return ''.join(output)
 
 def onetime_pad(length):
     output = []
