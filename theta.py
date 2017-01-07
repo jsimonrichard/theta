@@ -1,128 +1,249 @@
-import re
-import random
-import math
+import theta_lib
+import public_key as pk
+import sys
+import os
 
-letters = ['a', 'b', 'c', 'd', 'e',
-           'f', 'g', 'h', 'i', 'j',
-           'k', 'l', 'm', 'n', 'o',
-           'p', 'q', 'r', 's', 't',
-           'u', 'v', 'w', 'x', 'y', 'z']
+def shift():
+    print()
+    print(' 1) Encode\n 2) Decode\n quit/exit to close the program\n')
+    command = input('Command > ')
 
-def clean_string(string):
-    regex = re.compile('[^a-z]')
-    return regex.sub('', string)
+    if command == '1':
+        print('Encode\n')
+        string = input('String > ')
+        key = input('Key > ')
 
-def shift (letter, shift):
-    index = int(letters.index(letter))
-    return letters[ (index + int(shift)) % 26]
-
-class shift_key(object):
-    def encode(string, key):
-        output = []
-        key = list(str(key))
-        string = clean_string(string)
+        ans = theta.shift_key.encode(string, key)
+        print(ans)
+        log('sort:encode', ans)
+        input()
         
-        for i in range(len(string)):      
-            index = int(letters.index( string[i] ))
-            shift_amount = key[i % len(key)]
-            output.append(shift( string[i], shift_amount ))
-        return ''.join(output)
+    elif command == '2':
+        print('Decode\n')
+        string = input('String > ')
+        key = input('Key > ')
+
+        ans = theta.shift_key.decode(string, key)
+        print(ans)
+        log('sort:decode', ans)
+        input()
+        
+    elif command == 'quit' or command == 'exit':
+        sys.exit()
+    else:
+        print('\nCommand Not Reconized\n')
+        shift()
+
+    main()
+
+def sort():
+    print()
+    print(' 1) Encode\n 2) Decode\n quit/exit to close the program\n')
+    command = input('Command > ')
+
+    if command == '1':
+        print('Encode\n')
+        string = input('String > ')
+        key = input('Key > ')
+
+        ans = theta.sort_key.encode(string, key)
+        print(ans)
+        log('sort:encode', ans)
+        input()
+        
+    elif command == '2':
+        print('Decode\n')
+        string = input('String > ')
+        key = input('Key > ')
+
+        ans = theta.sort_key.decode(string, key)
+        print(ans)
+        log('sort:decode', ans)
+        input()
+        
+    elif command == 'quit' or command == 'exit':
+        sys.exit()
+    else:
+        print('\nCommand Not Reconized\n')
+        sort()
+
+    main()
+
+def str_int():
+    print()
+    print(' 1) String to Int\n 2) Int to String\n quit/exit to close the program\n')
+    command = input('Command > ')
+
+    if command == '1':
+        print('String to Int\n')
+        string = input('String > ')
+        ans = theta.str_to_int(string)
+        print(ans)
+        log('str_to_int', ans)
+        input()
+        
+    elif command == '2':
+        print('Int to String\n')
+        print('Intagers must entered with commas in between. No spaces. (ex. 1,2,3,4,5)')
+        string = input('Int > ')
+        string = string.split(',')
+        for i in range(len(string)):
+            string[i] = int(string[i])
+
+        ans = theta.int_to_str(string)
+        print(ans)
+        log('int_to_str', ans)
+        input()
+        
+    elif command == 'quit' or command == 'exit':
+        sys.exit()
+    else:
+        print('\nCommand Not Reconized\n')
+        str_int()
+
+    main()
+
+def onetime_pad():
+    print('Onetime Pad\n')
+    length = int(input('Length > '))
+    ans = theta.onetime_pad(length)
+    print(ans)
+    log('onetime_pad', ans)
+    input()
+        
+    main()
+
+def algo():
+    print()
+    print(' 1) Primes\n quit/exit to close the program\n')
+    command = input('Command > ')
+
+    if command == '1':
+        print('Primes (It may take several minutes to compute)\n')
+        key = int(input('Key > '))
+        steps = int(input('Steps > '))
+        ans = theta.algo.primes(key, steps)
+        print(ans)
+        log('expanding_algorithums:primes', ans)
+        input()
+        
+    elif command == 'quit' or command == 'exit':
+        sys.exit()
+    else:
+        print('\nCommand Not Reconized\n')
+        algo()
+
+    main()
+
+def public_key():
+    print('Public Key')
+    print('Needs another computer to connect with.\nOne must run as server, one must run as client.')
     
-    def decode(string, key):
-        output = []
-        key = list(str(key))
-        string = clean_string(string)
-        
-        for i in range(len(string)):      
-            index = int(letters.index( string[i] ))
-            shift_amount = -int((key[i % len(key)]))
-            output.append(shift( string[i], shift_amount ))
-        return ''.join(output)
+    defaults = input('Use host and port defaults (host=localhost,port=5555)?\nY for yes, N for no > ').lower()
+
+    if defaults == 'n':
+        defaults = False
+    else:
+        defaults = True
+    
+    key = pk.init(defaults=defaults)
+    print('Key => ' + str(key))
+
+    input()
+    
+    main()
+
+def hidden_file():
+    print('Hidden File (File system must be NFTS)\nFile Name must be full path.\nHidden File Name does not need any path.\nWhen this program is executed, it will open notepad.')
+    print()
+    file_name = input('File Name > ')
+    hidden_name = input('Hidden File Name > ')
+    
+    try:
+        os.system('notepad ' + file_name + ':' + hidden_name)
+        log('hidden_file', file_name + ':' + hidden_name)
+    except:
+        print('Error')
+    input()
+
+    main()
+
+def log(origin, data):
+    origin, data = (str(origin), str(data))
+    data = '\n -- ' + origin + ' => ' + data
+    log_file = open('log.txt', 'a')
+    log = log_file.write(data)
+    log_file.close()
+
+def show_log():
+    print('Log\n')
+    log_file = open('log.txt', 'r')
+    log = log_file.read()
+    log_file.close()
+
+    if log == '':
+        print('Nothing Here')
+    else:
+        print(log)
+    input()
+    
+    main()
+
+def clear_log():
+    print('Clearing log...')
+    log_file = open('log.txt', 'w')
+    log = log_file.write('')
+    log_file.close()
+    print('Done')
+    input()
+
+    main()
+
+def main():
+    print('''
+ 1) Shift Key
+ 2) Sort Key
+ 3) Str and Int conversion
+ 4) Onetime Pad
+ 5) Expanding Algorithum
+ 6) Public Key (Creates a key with a system across the network)
+ 7) Hidden File (View and Edit)
+ 8) View Log
+ 9) Clear Log
+ ''')
+    command = input('Command > ')
+
+    if command == '1':
+        shift()
+    elif command == '2':
+        sort()
+    elif command == '3':
+        str_int()
+    elif command == '4':
+        onetime_pad()
+    elif command == '5':
+        algo()
+    elif command == '6':
+        public_key()
+    elif command == '7':
+        hidden_file()
+    elif command == '8':
+        show_log()
+    elif command == '9':
+        clear_log()
+    elif command == 'quit' or command == 'exit':
+        sys.exit()
+    elif command == 'cls' or command == 'clear':
+        a = os.system('cls')
+        main()
+    else:
+        print('\nCommand Not Reconized\n')
+        main()
 
 
-class sort_key(object):
-    def encode(string, key):
-        output = []
-        temp = []
-        key = list(str(key))
-        string = clean_string(string)
+print('#############')
+print('### THETA ###')
+print('#############')
+print('A cryptography libray.')
 
-        #assign
-        for i in range(len(string)):      
-            temp.append([string[i], key[i % len(key)]])
-
-        #sort
-        for n in range(0, 9):
-            for s in temp:
-                if int(s[1]) == int(n):
-                    output.append(s[0])
-
-        return ''.join(output)
-
-    def decode(string, key):
-        output = []
-        temp = []
-        key = list(str(key))
-        string = clean_string(string)
-
-        comp_list = []
-        decode_key = []
-
-        for i in range(math.ceil(len(string) / len(key))):
-            comp_list += key
-
-        for i in range(len(comp_list) - len(string)):
-            del comp_list[len(comp_list) - 1]
-
-        for n in range(0, 9):
-            count = comp_list.count(str(n))
-            for i in range(count):
-                decode_key.append(str(n))
-            
-        #assign
-        for i in range(len(string)):      
-            temp.append([string[i], decode_key[i]])
-
-        #sort
-        for i in comp_list:
-            for s in range(len(temp)):
-                if int(temp[s][1]) == int(i):
-                    output.append(temp[s][0])
-                    del temp[s]
-                    break
-        
-        return ''.join(output)
-
-def str_to_int(string):
-    string = clean_string(string)
-    output = []
-    for i in string:
-        output.append( int(letters.index(i)) + 1 )
-    return output
-
-def int_to_str(int_list):
-    output = []
-    for i in int_list:
-        output.append( letters[i - 1] )
-    return ''.join(output)
-
-def onetime_pad(length):
-    output = []
-    for i in range(length):
-        output.append(str(random.randint(0, 9)))
-    return ''.join(output)
-
-class algo(object):
-    #These fuctions take a while to run
-    def primes(key, steps):
-        out = str(key)
-        for i in range(steps):
-            x = out[-7:-1]
-            middle = math.floor(len(x)/2)
-            x_firsthalf, x_secondhalf = (x[0:middle], x[middle:len(x)])
-            x = int(x_firsthalf) * int(x_secondhalf)
-            x = (2**x) - 1
-            out += str(x)
-
-        return out
-
+main()
